@@ -1,0 +1,232 @@
+let datos = [];
+
+function listar() {
+    fetch('http://localhost/API/equipos.json')
+      .then(response => response.json())
+      .then(data => {
+        datos = data; // Actualiza el array de datos
+        Filas(datos); // Llama a la función Filas para renderizar la tabla
+      });
+  }
+  
+
+//function listar() {
+    //fetch('http://localhost/API/equipos.json') http://localhost/API/equipos.json
+    //fetch('./API/equipos.json')
+    //fetch(`http://localhost:3307/webapp/${endpoint}`)
+    //fetch("http://localhost/API/equipos.json") //ES LA UNICA QUE FUNCIONO HASTA QUE SE BLOQUEO"
+    //fetch('http://localhost/API/equipos.json')
+    //fetch("./API/equipos.json")
+    
+    //.then(response => response.json())
+    //.then(data => {
+        //Filas(data)
+        //datos = data;
+    /*.then(response => response.json())
+    .then(data => {
+        allTeamsData = data; // Almacena todos los datos de equipos
+        renderTeamList(data); // Renderiza la lista de equipos inicial
+        updateUI(datos);
+        // Agrega event listeners
+        addEventListeners();*/
+    //}
+    
+//)
+    //.catch(error => console.error('Error:', error));
+
+    // .then(response => response.json())
+     //.then(data => {
+        //datos = data;
+        //updateUI(datos);
+     // });
+  //}
+
+  function Filas(filas) {
+    const rows = filas.map(Fila);
+    const tbody = document.getElementById('datos');
+    tbody.innerHTML = ''; // Limpiar el cuerpo de la tabla
+    rows.forEach(row => tbody.appendChild(row));
+  }
+
+function eliminar(id) {
+    const eliminar = confirm('¿Eliminar?');//true|false
+    if(eliminar) {
+        fetch(`http://localhost:3307/webapp/EliminarClubesController?id=${id}`,{
+            method:'delete',
+        }).then(response => listar());
+    }
+}
+
+function editar(id){
+ const objetoaeditar = datos.find(x=> x.id === id);
+ document.getElementById('id').value = objetoaeditar.id;
+ document.getElementById('name').value = objetoaeditar.name;
+ document.getElementById('logo').value = objetoaeditar.logo;
+ document.getElementById('fundado').value = objetoaeditar.fundado;
+ document.getElementById('provincia').value = objetoaeditar.provincia;
+ document.getElementById('estadio').value = objetoaeditar.estadio;
+ document.getElementById('construido').value = objetoaeditar.construido;
+ document.getElementById('capacidad').value = objetoaeditar.capacidad;
+ document.getElementById('campprof').value = objetoaeditar.campprof;
+ document.getElementById('campamat').value = objetoaeditar.campamat;
+ document.getElementById('categoria').value = objetoaeditar.categoria;
+
+}
+function Fila(obj) {
+    return `
+        <tr>
+            <td>${obj.id}</td>
+            <td>${obj.name}</td>
+            <td>${obj.logo}</td>
+            <td>${obj.fundado}</td>
+            <td>${obj.provincia}</td>
+            <td>${obj.estadio}</td>
+            <td>${obj.construido}</td>
+            <td>${obj.capacidad}</td>
+            <td>${obj.campprof}</td>
+            <td>${obj.campamat}</td>
+            <td>${obj.categoria}</td>
+            <td>
+                <a href="#" onclick="eliminar(${obj.id})">X</a>
+                <a href="#" onclick="editar(${obj.id})">E</a>
+            </td>
+        </tr>
+    `;
+}
+/*function Fila(obj) {
+    return `
+        <tr>
+            <td>${obj.inputid}</td>
+            <td>${obj.inputnombre}</td>
+            <td>${obj.inputlogo}</td>
+            <td>${obj.inputfundado}</td>
+            <td>${obj.inputprovincia}</td>
+            <td>${obj.inputestadio}</td>
+            <td>${obj.inputconstruido}</td>
+            <td>${obj.inputcapacidad}</td>
+            <td>${obj.inputcampprof}</td>
+            <td>${obj.inputcampamat}</td>
+            <td>${obj.inputcategoria}</td>
+            
+            <td>
+                <a href="#" onclick="eliminar(${obj.id})">X</a>
+                <a href="#" onclick="editar(${obj.id})">E</a>
+            </td>
+        </tr>
+    `
+}
+//
+//al cargar la pagina
+listar();
+
+function limpiar(){
+//guardo el id del registro que quiero editar
+ document.getElementById('id').value = '';
+ document.getElementById('name').value = '';
+ document.getElementById('logo').value = '';
+ document.getElementById('fundado').value = '';
+ document.getElementById('provincia').value = '';
+ document.getElementById('estadio').value = '';
+ document.getElementById('construido').value = '';
+ document.getElementById('capacidad').value = '';
+ document.getElementById('campprof').value = '';
+ document.getElementById('campamat').value = '';
+ document.getElementById('categoria').value = '';
+}
+*/
+function guardar() {
+    const id = document.getElementById('id').value;
+    const name = document.getElementById('name').value;
+    const logo = document.getElementById('logo').value;
+    const fundado = document.getElementById('fundado').value;
+    const provincia = document.getElementById('provincia').value;
+    const estadio = document.getElementById('estadio').value;
+    const construido = document.getElementById('construido').value;
+    const capacidad = document.getElementById('capacidad').value;
+    const campprof = document.getElementById('campprof').value;
+    const campamat = document.getElementById('campamat').value;
+    const categoria = document.getElementById('categoria').value;
+  
+    if (!id || !name || !logo || !fundado || !provincia || !estadio || !construido || !capacidad || !campprof || !campamat || !categoria) {
+      console.error('Faltan campos por llenar');
+      return;
+    }
+  
+    const jsonRequest = {
+      id: id,
+      name: name,
+      logo: logo,
+      fundado: fundado,
+      provincia: provincia,
+      estadio: estadio,
+      construido: construido,
+      capacidad: capacidad,
+      campprof: campprof,
+      campamat: campamat,
+      categoria: categoria
+    };
+  
+    const endpoint = id ? 'ModificarClubesController' : 'CrearClubesControles';
+  
+    fetch(`http://localhost:3307/webapp/${endpoint}`, {
+      method: 'POST',
+      body: JSON.stringify(jsonRequest),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(response => response.json())
+    .then(data => {
+      datos.push(data); // Agrega el nuevo dato al array de datos
+      listar(); // Llama a la función listar para actualizar la tabla
+    })
+    .catch(error => console.error('Error al guardar datos:', error));
+  }
+  
+        
+        
+        
+        /*const url = `http://localhost:3307/webapp/${endpoint}`;
+
+        try {
+            const respuesta =  fetch('http://localhost:3307/webapp/CrearClubesController', {
+              method: 'POST',
+             body: JSON.stringify(jsonRequest),
+              headers: new Headers({
+                'Content-Type': 'application/json'
+              })
+            });
+            const datos =  respuesta.json; // <--- Agregué los paréntesis
+            if (datos.success) {
+                console.log('Datos guardados correctamente');
+              limpiar();
+              listar();
+            } else {
+              console.error('Error al guardar datos:', datos.error);
+            }
+          } catch (error) {
+            console.error('Error al enviar solicitud:', error);
+          }
+        }*/
+        
+ 
+    //FETCH POST al server await fetch('http://localhost:3306/webapp/ModificarClubesController?id=$(id)',{
+    /*fetch('http://localhost:3307/webapp/${endpoint}',{
+        method: 'POST',
+        body: json.stringify(jsonRequest),
+        headers: new Headers({
+            'Content-Type':'text/json'
+        })
+    }
+);
+limpiar();
+listar();*/
+//function listar(){
+   // const json= fetch('http://localhost:3306/webapp/ListarClubesController')
+    //.then(response=>response.json())
+//}
+
+
+
+
+

@@ -1,0 +1,8 @@
+{
+    "java.configuration.updateBuildConfiguration": "interactive",
+    "java.compile.nullAnalysis.mode": "automatic",
+    "commentTranslate.targetLanguage": "en",
+    "cSpell.words": [
+        "jdbc"
+    ]
+}

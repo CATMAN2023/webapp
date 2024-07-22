@@ -1,0 +1,28 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "AdministradordeConexiones",
+            "request": "launch",
+            "mainClass": "ar.com.codo24101.dao.AdministradordeConexiones",
+            "projectName": "webapp"
+        },
+        {
+            "type": "java",
+            "name": "ObtenerClubesController",
+            "request": "launch",
+            "mainClass": "ar.com.codo24101.controller.ObtenerClubesController",
+            "projectName": "webapp"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-App<webapp>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "ar.com.codo24101.App",
+            "projectName": "webapp",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
